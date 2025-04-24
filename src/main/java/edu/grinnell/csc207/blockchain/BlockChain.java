@@ -135,8 +135,8 @@ public class BlockChain {
             try {
                 String msg = currentBlock.getNum()
                         + currentBlock.getAmount()
-                        + (currentBlock.getPrevHash() != null ? 
-                        currentBlock.getPrevHash().toString() : "");
+                        + (currentBlock.getPrevHash() != null 
+                        ? currentBlock.getPrevHash().toString() : "");
                 byte[] calculatedHash = Block.calculateHash(msg);
                 Hash computedHash = new Hash(calculatedHash);
 
