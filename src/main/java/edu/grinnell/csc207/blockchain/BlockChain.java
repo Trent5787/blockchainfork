@@ -3,8 +3,8 @@ package edu.grinnell.csc207.blockchain;
 import java.security.NoSuchAlgorithmException;
 
 /**
- * A linked list of hash-consistent blocks representing a ledger of
- * monetary transactions.
+ * A linked list of hash-consistent blocks representing a ledger of monetary
+ * transactions.
  */
 class Node {
 
@@ -13,43 +13,68 @@ class Node {
     Node next;
 
     public Node(Block block) throws NoSuchAlgorithmException {
-       //this.block = new Block(0,initial,null);
+        //this.block = new Block(0,initial,null);
         this.block = block;
         this.next = null;
     }
-    
-     public Block getBlock() {
+
+    public Block getBlock() {
         return this.block;
     }
-     
-     public Node getNext() {
+
+    public Node getNext() {
         return this.next;
     }
-     
+
 }
 
+/**
+ * Blockchain class
+ * @author trent
+ */
 public class BlockChain {
 
     private Node first;
     private Node last;
     private int size = 0;
 
+    /**
+     * Creates a new block and relevant info
+     * @param initial
+     * @throws NoSuchAlgorithmException
+     */
     public BlockChain(int initial) throws NoSuchAlgorithmException {
-        Block newBlock = new Block(0,initial,null);
+        Block newBlock = new Block(0, initial, null);
         Node node = new Node(newBlock);
         this.first = this.last = node;
         this.size++;
     }
-    
+
+    /**
+     * Performs mining to get the nonce
+     * @param amount
+     * @return the nonce of a new block 
+     * @throws NoSuchAlgorithmException
+     * @throws Exception
+     */
     public long mine(int amount) throws NoSuchAlgorithmException, Exception {
         Hash newHash = gethash();
-        return(new Block(size,amount,newHash).getNonce()); //I guess this just returns the nonce
+        return (new Block(size, amount, newHash).getNonce()); //I guess this just returns the nonce
     }
-    
+
+    /**
+     * Gets the size
+     * @return size
+     */
     public int getSize() {
         return size;
     }
-    
+
+    /**
+     * Appends a block to the blockchain
+     * @param blk
+     * @throws NoSuchAlgorithmException
+     */
     public void append(Block blk) throws NoSuchAlgorithmException {
         if (blk.getPrevHash() != blk.gethash()) {
             throw new IllegalArgumentException("Invalid hash");
@@ -59,50 +84,63 @@ public class BlockChain {
         last = newNode;
         size++;
     }
-    
+
+    /**
+     * Removes the last block of the blockchain
+     * @return
+     */
     public boolean removeLast() {
-        
-        if (size == 1)
-            return(false); //single block in chain
-        
+
+        if (size == 1) {
+            return (false); //single block in chain
+        }
         Node trav = first;
-        
-        while(trav.next != last) {
+
+        while (trav.next != last) {
             trav = trav.next;
         }
         last = trav;
         last.next = null;
         size--;
-        
-        return(true);
+
+        return (true);
     }
-    
+
+    /**
+     * Gets the hash
+     * @return hash
+     * @throws Exception
+     */
     public Hash gethash() throws Exception {
         if (last != null) {
-        return(last.block.gethash());
+            return (last.block.gethash());
         } else {
             throw new Exception("Last is null");
         }
     }
-    
+
+    /**
+     * Checks to see if the blockchain is valid
+     * @return true or false
+     */
     public boolean isValidBlockChain() {
-        
+
         if (first == null || last == null) {
             return false;
         }
-        
-        for(Node trav = first; trav.next != null; trav = trav.next) {
-           Block currentBlock = trav.getBlock();
-           
-             try {
-                String msg = currentBlock.getNum() + 
-                             currentBlock.getAmount() + 
-                             (currentBlock.getPrevHash() != null ? currentBlock.getPrevHash().toString() : "");
+
+        for (Node trav = first; trav.next != null; trav = trav.next) {
+            Block currentBlock = trav.getBlock();
+
+            try {
+                String msg = currentBlock.getNum()
+                        + currentBlock.getAmount()
+                        + (currentBlock.getPrevHash() != null ? currentBlock.getPrevHash().toString() : "");
                 byte[] calculatedHash = Block.calculateHash(msg);
                 Hash computedHash = new Hash(calculatedHash);
 
                 if (!computedHash.isValid()) {
-                    return false;  
+                    return false;
                 }
 
             } catch (Exception e) {
@@ -111,8 +149,10 @@ public class BlockChain {
         }
         return true;
     }
-    
-    
+
+    /**
+     * Prints the balance of Alice and Bob
+     */
     public void printBalance() { //traversal to calculate these values
         int Alice = first.getBlock().amount;
         int Bob = 0;
@@ -122,7 +162,7 @@ public class BlockChain {
         while (cur != null) {
             if ((BobTemp += -cur.getBlock().amount) < 0) {
                 System.out.println("Invalid transaction");
-               System.out.println("Alice: " + Alice + ", Bob: " + Bob);
+                System.out.println("Alice: " + Alice + ", Bob: " + Bob);
                 return;
             }
             if ((AliceTemp -= -cur.getBlock().amount) < 0) {
@@ -137,20 +177,23 @@ public class BlockChain {
         System.out.println("Alice: " + Alice + ", Bob: " + Bob);
 
     }
-    
+
+    /**
+     * Returns the string version of the blockchain
+     * @return str
+     */
+    @Override
     public String toString() {
-        
+
         Node trav = first;
         String str = "";
-        
-        while(trav.next != null) {
+
+        while (trav.next != null) {
             str = str.concat(trav.block.toString());
             trav = trav.next;
         }
-        return(str);
-  
+        return (str);
+
     }
-    
-    
-    
+
 }
