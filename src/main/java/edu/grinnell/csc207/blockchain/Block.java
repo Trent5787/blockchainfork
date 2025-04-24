@@ -90,7 +90,6 @@ public class Block {
      * @param amount
      * @param prevHash
      * @param nonce
-     * @return void
      */
     public Block(int num, int amount, Hash prevHash, long nonce) {
         //no mining. Just computation of hash like above.
