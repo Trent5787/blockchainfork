@@ -87,7 +87,7 @@ public class BlockChain {
 
     /**
      * Removes the last block of the blockchain
-     * @return
+     * @return true or false
      */
     public boolean removeLast() {
 
@@ -135,7 +135,8 @@ public class BlockChain {
             try {
                 String msg = currentBlock.getNum()
                         + currentBlock.getAmount()
-                        + (currentBlock.getPrevHash() != null ? currentBlock.getPrevHash().toString() : "");
+                        + (currentBlock.getPrevHash() != null ? 
+                        currentBlock.getPrevHash().toString() : "");
                 byte[] calculatedHash = Block.calculateHash(msg);
                 Hash computedHash = new Hash(calculatedHash);
 
@@ -154,27 +155,27 @@ public class BlockChain {
      * Prints the balance of Alice and Bob
      */
     public void printBalance() { //traversal to calculate these values
-        int Alice = first.getBlock().amount;
-        int Bob = 0;
-        int AliceTemp = Alice;
-        int BobTemp = Bob;
+        int alice = first.getBlock().amount;
+        int bob = 0;
+        int aliceTemp = alice;
+        int bobTemp = bob;
         Node cur = first.next;
         while (cur != null) {
-            if ((BobTemp += -cur.getBlock().amount) < 0) {
+            if ((bobTemp += -cur.getBlock().amount) < 0) {
                 System.out.println("Invalid transaction");
-                System.out.println("Alice: " + Alice + ", Bob: " + Bob);
+                System.out.println("Alice: " + alice + ", Bob: " + bob);
                 return;
             }
-            if ((AliceTemp -= -cur.getBlock().amount) < 0) {
+            if ((aliceTemp -= -cur.getBlock().amount) < 0) {
                 System.out.println("Invalid transaction");
-                System.out.println("Alice: " + Alice + ", Bob: " + Bob);
+                System.out.println("Alice: " + alice + ", Bob: " + bob);
                 return;
             }
-            Bob += -cur.getBlock().amount;
-            Alice -= -cur.getBlock().amount;
+            bob += -cur.getBlock().amount;
+            alice -= -cur.getBlock().amount;
             cur = cur.next;
         }
-        System.out.println("Alice: " + Alice + ", Bob: " + Bob);
+        System.out.println("Alice: " + alice + ", Bob: " + bob);
 
     }
 

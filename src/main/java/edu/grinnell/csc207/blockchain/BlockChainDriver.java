@@ -8,6 +8,9 @@ import java.util.Scanner;
  */
 public class BlockChainDriver {
 
+    /**
+     * Help template
+     */
     public static void helpTemplate() {
         System.out.println("Valid commands:");
         System.out.println("    mine: discovers the nonce for a given transaction");
@@ -59,7 +62,8 @@ public class BlockChainDriver {
                 int amount = Integer.parseInt(scanner.nextLine());
                 System.out.print("Nonce?");
                 int nonce = Integer.parseInt(scanner.nextLine());
-                Block blk = new Block(newBlockChain.getSize(), amount, newBlockChain.gethash(), nonce);
+                Block blk = new Block(newBlockChain.getSize(), amount, 
+                        newBlockChain.gethash(), nonce);
                 newBlockChain.append(blk);
 
             } else if ("remove".equals(input)) {

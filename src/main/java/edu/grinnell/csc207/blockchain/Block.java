@@ -1,6 +1,6 @@
 package edu.grinnell.csc207.blockchain;
 
-import java.nio.ByteBuffer;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -32,15 +32,15 @@ public class Block {
     
     /**
     * Mines the block
-    * @return void
+    * 
     */
     private void mineBlock() throws NoSuchAlgorithmException {
         String msg = "";
-        String newNum = Integer.toString(num);             //Duplication of code here  //Also, need to convert to bytes, instead of ints or longs
+        String newNum = Integer.toString(num);            
         String newAmount = Integer.toString(amount);
         msg = msg.concat(newNum);
         msg = msg.concat(newAmount);
-        //msg = msg.concat(transaction);
+
 
         if (prevHash != null) {
             String newPrevHash = prevHash.toString();
@@ -74,7 +74,7 @@ public class Block {
     /**
      * Calculates and returns the hash
      * @param msg
-     * @return
+     * @return hash
      * @throws NoSuchAlgorithmException
      */
     public static byte[] calculateHash(String msg) throws NoSuchAlgorithmException {
