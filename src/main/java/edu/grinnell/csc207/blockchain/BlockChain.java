@@ -59,7 +59,7 @@ public class BlockChain {
      */
     public long mine(int amount) throws NoSuchAlgorithmException, Exception {
         Hash newHash = gethash();
-        return (new Block(size, amount, newHash).getNonce()); //I guess this just returns the nonce
+        return (new Block(size, amount, newHash).getNonce()); 
     }
 
     /**
@@ -154,7 +154,7 @@ public class BlockChain {
     /**
      * Prints the balance of Alice and Bob
      */
-    public void printBalance() { //traversal to calculate these values
+    public void printBalance() { 
         int alice = first.getBlock().amount;
         int bob = 0;
         int aliceTemp = alice;

@@ -46,7 +46,6 @@ public class BlockChainDriver {
         //Printing and looking for command input
         while (true) {
             System.out.println(newBlockChain.toString());
-            System.out.println("");
             System.out.print("Command? ");
             String input = scanner.nextLine();
 
