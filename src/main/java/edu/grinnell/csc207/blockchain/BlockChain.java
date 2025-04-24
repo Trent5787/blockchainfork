@@ -21,6 +21,11 @@ class Node {
      public Block getBlock() {
         return this.block;
     }
+     
+     public Node getNext() {
+        return this.next;
+    }
+     
 }
 
 public class BlockChain {
@@ -36,9 +41,9 @@ public class BlockChain {
         this.size++;
     }
     
-    public Block mine(int amount) throws NoSuchAlgorithmException, Exception {
+    public long mine(int amount) throws NoSuchAlgorithmException, Exception {
         Hash newHash = gethash();
-        return(new Block(size,amount,newHash)); //I guess this just returns the nonce
+        return(new Block(size,amount,newHash).getNonce()); //I guess this just returns the nonce
     }
     
     public int getSize() {
@@ -108,8 +113,29 @@ public class BlockChain {
     }
     
     
-    public void printBalance() {
-        System.out.println("Alice: " + Alice + ", Bob: " + Bob); //idk
+    public void printBalance() { //traversal to calculate these values
+        int Alice = first.getBlock().amount;
+        int Bob = 0;
+        int AliceTemp = Alice;
+        int BobTemp = Bob;
+        Node cur = first.next;
+        while (cur != null) {
+            if ((BobTemp += -cur.getBlock().amount) < 0) {
+                System.out.println("Invalid transaction");
+               System.out.println("Alice: " + Alice + ", Bob: " + Bob);
+                return;
+            }
+            if ((AliceTemp -= -cur.getBlock().amount) < 0) {
+                System.out.println("Invalid transaction");
+                System.out.println("Alice: " + Alice + ", Bob: " + Bob);
+                return;
+            }
+            Bob += -cur.getBlock().amount;
+            Alice -= -cur.getBlock().amount;
+            cur = cur.next;
+        }
+        System.out.println("Alice: " + Alice + ", Bob: " + Bob);
+
     }
     
     public String toString() {

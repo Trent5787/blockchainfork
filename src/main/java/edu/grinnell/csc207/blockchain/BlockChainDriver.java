@@ -41,30 +41,34 @@ public class BlockChainDriver {
         
         //Printing and looking for command input
         while (true) {
-            newBlockChain.toString(); //not implemented
-            System.out.print("Command?");
+            System.out.println(newBlockChain.toString()); 
+            System.out.println("");
+            System.out.print("Command? ");
             String input = scanner.nextLine();
             
             if("mine".equals(input)) {
-                System.out.print("Amount transferred?");
+                System.out.print("Amount transferred? ");
                 int amount = Integer.parseInt(scanner.nextLine());
-                newBlockChain.mine(amount);
+                long nonceVal;
+                nonceVal = newBlockChain.mine(amount);
+                System.out.println("amount = " + amount + ", nonce = " + nonceVal);
                 
             } else if ("appends".equals(input)) {
                 System.out.print("Amount transferred?");
                 int amount = Integer.parseInt(scanner.nextLine());
                 System.out.print("Nonce?");
                 int nonce = Integer.parseInt(scanner.nextLine());
-                newBlockChain.append(blk);//what the heck does this take 
+                Block blk = new Block(newBlockChain.getSize(), amount, newBlockChain.gethash(), nonce); 
+                newBlockChain.append(blk);
                 
             } else if ("remove".equals(input)) {
                 newBlockChain.removeLast();
                 
             } else if ("check".equals(input)) {
-                newBlockChain.isValidBlockChain();
+                System.out.println(newBlockChain.isValidBlockChain());
                 
             } else if ("report".equals(input)) {
-                newBlockChain.printBalance(); //not correctly implemented
+                newBlockChain.printBalance();
                 
             } else if ("help".equals(input)) {
                 helpTemplate();
